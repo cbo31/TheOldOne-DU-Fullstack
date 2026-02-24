@@ -1,4 +1,4 @@
-import "./index.css";
+import "./assets/index.css";
 import FeedPublic from "./components/FeedPublic";
 
 function App() {
