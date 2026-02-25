@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, TextField, Card, CardContent, CardActions, Typography } from '@mui/material'
+import { Box, Button, TextField, Card, CardContent, CardActions, Typography } from '@mui/material'
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
@@ -7,12 +7,29 @@ function Login({ onLoginSuccess }) {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
-    e.prevent.default();
+    e.preventDefault();
+
+    const response = await fetch('http://127.0.0.1:8000/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      onLoginSuccess(data.user)
+    }
+
+    
   }
 
   return (
     <div>
       <h1>The Old One</h1>
+      <Box component="form" onSubmit={handleSubmit}>
       <Card sx={{ 
         display: "flex", 
         flexDirection: "column", 
@@ -33,18 +50,23 @@ function Login({ onLoginSuccess }) {
             id="outlined-email"
             label="Email"
             size="small"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             type="password"
             id="outlined-email"
             label="Password"
             size="small"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </CardContent>
         <CardActions sx={{ display: "flex", flexDirection: "column", px: 2}}>
-          <Button variant="contained" size="medium" sx={{ backgroundColor: "#C45A3B" }}>sign in</Button>
+          <Button type="submit" variant="contained" size="medium" sx={{ backgroundColor: "#C45A3B" }}>sign in</Button>
         </CardActions>
       </Card>
+      </Box>
     </div>
   )
 }
