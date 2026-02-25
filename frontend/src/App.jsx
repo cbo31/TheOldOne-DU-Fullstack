@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import Login from './components/Login.jsx'
 import FeedPublic from './components/FeedPublic.jsx'
@@ -8,10 +8,34 @@ import SignUp from './components/SignUp.jsx'
 
 function AppContent() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const handleLoginSuccess = (userData) => {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetch('http://127.0.0.1:8000/api/me/', {
+        headers: { 'Authorization': `Bearer ${token}`}
+      })
+      .then(res => res.json())
+      .then(data => {
+        setUser(data.user);
+        navigate(`/${data.user.id}/feed`);
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+      })
+      .finally(() => setLoading(false))
+    } else {
+      setLoading(false)
+    }
+  }, [])
+
+  if (loading) return null;
+
+  const handleLoginSuccess = (userData, token) => {
     setUser(userData);
+    localStorage.setItem('token', token);
     navigate(`/${userData.id}/feed`);
   };
 

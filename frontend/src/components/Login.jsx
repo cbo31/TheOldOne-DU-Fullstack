@@ -22,7 +22,7 @@ function Login({ onLoginSuccess }) {
     const data = await response.json();
 
     if (response.ok) {
-      onLoginSuccess(data.user);
+      onLoginSuccess(data.user, data.access);
       navigate(`/${data.user.id}/feed`);
       console.log("user :", data.user.id);
     };
