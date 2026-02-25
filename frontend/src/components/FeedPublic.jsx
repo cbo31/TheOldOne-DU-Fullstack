@@ -21,77 +21,113 @@ import {
 } from "../assets/mui";
 
 
-{/* ======================================
-    Main component: FeedPublic
-    ====================================== */}
+// ======================================
+// Main component: FeedPublic
+// ======================================
 
-export default function FeedPublic() {
+export default function FeedPublic({ user }) {
     const [open, setOpen] = React.useState(false);
     const openCreateDialog = () => setOpen(true); 
     const closeCreateDialog = () => setOpen(false);
+    const [posts, setPosts] = React.useState([
+    {
+      id: 1,
+      author: "Eddy Malou",
+      date: "February 24, 2026",
+      text: "La congolexicomatisation des lois du marché.",
+      imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxAPnjjYw7fRQ2SYiBpK5yV6dAnbnXdqdHZg&s",
+    },
+    ]);
     const createPublication = ({ text, imageUrl }) => {
+      const newPost = {
+        id: Date.now(),
+        author: user?.name ?? "Utilisateur",
+        date: new Date().toLocaleDateString(),
+        text,
+        imageUrl,
+      };
+
+      setPosts((prev) => [newPost, ...prev]);
     };
 
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}> 
-        <Card sx={{ width: 600, maxWidth: "100%", mx: "auto" }}>
-        <CardHeader
-            avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="user">
-                E
-            </Avatar>
-            }
-            title="Eddy Malou"
-            subheader="February 24, 2026"
-        />
-        <CardMedia
-            component="img"
-            image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxAPnjjYw7fRQ2SYiBpK5yV6dAnbnXdqdHZg&s"
-            alt="Eddy"
-            sx={{width: "100%", height: "auto"}}      
-        />
+
+          {/* <Avatar sx={{ bgcolor: red[500] }}>
+            {(user?.name?.[0] ?? "U").toUpperCase()}
+          </Avatar> */}
+
+      <Card sx={{ width: 600, maxWidth: "100%", mx: "auto", mb: 3 }}>
         <CardContent>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            La congolexicomatisation des lois du marché.
-            </Typography>
-        </CardContent>
-        <CardActions
-        sx={{display: "flex", width: "100%"}}
-        >
-        <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-        </IconButton>
-        <Button
-            variant="contained"
+          <div
             onClick={openCreateDialog}
-            sx={{marginLeft: "auto", backgroundColor: "#C45A3B", borderRadius: "14px"}}
-        >
-            PUBLIER
-        </Button>
-        </CardActions>    
-    </Card>
+            style={{
+              backgroundColor: "#F0F2F5",
+              borderRadius: "20px",
+              padding: "12px 16px",
+              cursor: "pointer",
+              color: "#555",
+              textAlign: "left",
+            }}
+          >
+            Quoi de neuf ?
+          </div>
+        </CardContent>
+      </Card>
 
+      {posts.map((post) => (
+        <Card key={post.id} sx={{ width: 600, maxWidth: "100%", mx: "auto", mb: 3 }}>
+          <CardHeader
+            avatar={
+              <Avatar sx={{ bgcolor: red[500] }}>
+                {post.author[0]}
+              </Avatar>
+            }
+            title={post.author}
+            subheader={post.date}
+          />
 
-{/* ======================================
-    Dialog used to create a new publication
-    ====================================== */}
+          {post.imageUrl && (
+            <CardMedia
+              component="img"
+              image={post.imageUrl}
+              sx={{ width: "100%", height: "auto" }}
+            />
+          )}
 
-    <CreatePublicationDialog
-        open={open}
-        onClose={closeCreateDialog}
-        onCreate={(payload) => {
-            createPublication(payload);
-            closeCreateDialog();
-        }}
-    />
-    </Container>
+          {post.text && (
+            <CardContent>
+              <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                {post.text}
+              </Typography>
+            </CardContent>
+          )}
+
+          <CardActions>
+            <IconButton>
+              <FavoriteIcon />
+            </IconButton>
+          </CardActions>
+        </Card>
+      ))}    
+
+      <CreatePublicationDialog
+              open={open}
+              onClose={closeCreateDialog}
+              onCreate={(payload) => {
+                createPublication(payload);
+                closeCreateDialog();
+              }}
+            />
+
+</Container>
   );
 }
 
 
-{/* ======================================
-    Component: CreatePublicationDialog
-    ====================================== */}
+// ======================================
+//   Component: CreatePublicationDialog
+// ======================================
 
 function CreatePublicationDialog({ open, onClose, onCreate }) {
   const handleSubmit = (event) => {

@@ -6,7 +6,7 @@ function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,7 @@ function Login({ onLoginSuccess }) {
 
     if (response.ok) {
       onLoginSuccess(data.user);
-      navigate(`/${data.user.id}/feed`);
+      // navigate(`/${data.user.id}/feed`);
       console.log("user :", data.user.id);
     }
 

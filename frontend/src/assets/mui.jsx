@@ -2,7 +2,7 @@
 // Layout components
 // ==============================
 export { styled } from "@mui/material/styles";
-export { Container, Card } from "@mui/material";
+export { Container, Card, Box } from "@mui/material";
 
 
 // ==============================
