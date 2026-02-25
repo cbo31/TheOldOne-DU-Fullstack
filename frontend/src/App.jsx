@@ -3,6 +3,8 @@ import { useState } from 'react'
 import './App.css'
 import Login from './components/Login.jsx'
 import FeedPublic from './components/FeedPublic.jsx'
+import SignUp from './components/SignUp.jsx'
+
 
 function AppContent() {
   const [user, setUser] = useState(null);
@@ -13,9 +15,11 @@ function AppContent() {
     navigate(`/${userData.id}/feed`);
   };
 
+
   return (
     <Routes>
       <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />}/>
+      <Route path="/signup" element={<SignUp/>}/>
       <Route path="/:userId/feed" element={user ? <FeedPublic user={user} /> : <Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
