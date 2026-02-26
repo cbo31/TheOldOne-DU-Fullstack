@@ -1,10 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import './App.css'
+import './assets/index.css'
 import Login from './components/Login.jsx'
-import FeedPublic from './components/FeedPublic.jsx'
+import Home from "./pages/Home.jsx"
 import SignUp from './components/SignUp.jsx'
-
 
 function AppContent() {
   const [user, setUser] = useState(null);
@@ -44,7 +43,7 @@ function AppContent() {
     <Routes>
       <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />}/>
       <Route path="/signup" element={<SignUp/>}/>
-      <Route path="/:userId/feed" element={user ? <FeedPublic user={user} /> : <Navigate to="/login" />} />
+      <Route path="/:userId/feed" element={user ? <Home user={user} /> : <Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   )
