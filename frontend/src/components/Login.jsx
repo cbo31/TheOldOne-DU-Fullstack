@@ -69,8 +69,8 @@ function Login({ onLoginSuccess }) {
             />
           </CardContent>
           <CardActions sx={{ display: "flex", flexDirection: "column", gap: 1, px: 2}}>
-            <Button type="submit" variant="contained" size="medium" sx={{ backgroundColor: "#C45A3B" }}>sign in</Button>
-            <Button onClick={handleSignUp} size="small" sx={{ color: "#C45A3B" }}>sign up</Button>
+            <Button type="submit" variant="contained" size="medium" sx={{ backgroundColor: "#C45A3B" }}>se connecter</Button>
+            <Button onClick={handleSignUp} size="small" sx={{ color: "#C45A3B" }}>s'inscrire</Button>
           </CardActions>
         </Card>
       </Box>

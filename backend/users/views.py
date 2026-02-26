@@ -71,7 +71,7 @@ def login(request):
 def me(request):
     token = request.headers.get('Authorization', '').replace('Bearer ', '')
     try:
-        decoded = AccessToken(token)  # 👈 simplejwt pour décoder
+        decoded = AccessToken(token)
         user = CustomUsers.objects.get(id=decoded['user_id'])
         return Response({
             'user': {
