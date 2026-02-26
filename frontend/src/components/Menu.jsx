@@ -13,12 +13,46 @@ import {
   EmailIcon,
   CelebrationIcon,
   SettingsIcon,
+  Avatar,
+  Typography,
+  Box,
+  Divider
 } from "../assets/mui";
 
 
-export default function IconMenu() {
+export default function IconMenu({ user }) {
   return (
     <Paper className="app-block menu-block" sx={{ width: 320, maxWidth: '100%' , borderRadius: 3}}>
+      
+    <Box
+      sx={{
+        p: 3,
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+      }}
+    >
+      <Avatar
+        sx={{
+          bgcolor: "#C45A3B",
+          width: 48,
+          height: 48,
+          fontSize: 20,
+        }}
+      >
+        {user?.name?.[0] ?? "U"}
+      </Avatar>
+
+      <Box>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+          {user?.name ?? "User"}
+        </Typography>
+      </Box>
+    </Box>
+
+<Divider />
+      
+      
       <MenuList>
 
       <MenuItem sx={{ py: 2 }}>

@@ -143,7 +143,7 @@ export default function FeedPublic({ user }) {
               "& .MuiCardHeader-subheader": { textAlign: "left" },
             }}
             avatar={
-              <Avatar sx={{ bgcolor: red[500] }}>
+              <Avatar sx={{ bgcolor: "#C45A3B" }}>
                 {post.author[0]}
               </Avatar>
             }

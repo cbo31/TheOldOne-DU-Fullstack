@@ -41,7 +41,7 @@ export default function Home({ user }) {
 
       {/* CONTENU */}
       <Box sx={{ display: "flex", gap: 2, p: 2 }}>
-        <Menu />
+        <Menu user={user}/>
         <Box sx={{ flex: 1 }}>
           <FeedPublic user={user} />
         </Box>
