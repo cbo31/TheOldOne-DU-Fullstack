@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/${{ secrets.SSH_USER }}/app
+            cd /home/${{ secrets.SSH_USER }}/workspaces/app
             git pull origin deploy
             docker compose down
             docker compose up -d --build
