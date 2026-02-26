@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from rest_framework import status 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import check_password
 from .models import CustomUsers
 from .serializers import UsersSerializers
@@ -24,7 +28,9 @@ def register(request):
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@csrf_exempt
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login(request):
     """
     Endpoint for connection
@@ -37,9 +43,12 @@ def login(request):
     try:
         user = CustomUsers.objects.get(email=email)
 
-        if check_password(password, user.password):
+        if user.check_password(password):
+            refresh = RefreshToken.for_user(user)
             return Response({
                 "message": "Succes handle connection",
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
                 "user": {
                     "id": user.id,
                     "email": user.email,
@@ -55,3 +64,21 @@ def login(request):
         return Response({
             "error": "Users not find"
         }, status=status.HTTP_404_NOT_FOUND)
+    
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def me(request):
+    token = request.headers.get('Authorization', '').replace('Bearer ', '')
+    try:
+        decoded = AccessToken(token)
+        user = CustomUsers.objects.get(id=decoded['user_id'])
+        return Response({
+            'user': {
+                'id': user.id,
+                'email': user.email,
+                'name': user.name
+            }
+        })
+    except Exception as e:
+        return Response({'error': 'Token invalide'}, status=401)
